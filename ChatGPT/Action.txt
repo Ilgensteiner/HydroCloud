@@ -1,0 +1,67 @@
+openapi: 3.1.0
+info:
+  title: Blog Post API
+  description: API to create blog posts and associate categories via AWS Lambda.
+  version: 1.0.0
+servers:
+  - url: https://glezq7qwr7vfxohwhjomk22uzm0ujmxe.lambda-url.eu-central-1.on.aws
+    description: AWS Lambda function URL
+paths:
+  /:
+    post:
+      operationId: createBlogPost
+      summary: Create a new blog post via AWS Lambda.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                subtitle:
+                  type: string
+                authors:
+                  type: string
+                content:
+                  type: string
+                preview_image:
+                  type: string
+                  default: "/media/img/blog/Logo.png"  # Fester Wert
+                category:
+                  type: integer
+      responses:
+        '201':
+          description: Blog post successfully created.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  post_id:
+                    type: integer
+        '400':
+          description: Invalid data or validation error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  errors:
+                    type: object
+        '405':
+          description: Invalid method.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
